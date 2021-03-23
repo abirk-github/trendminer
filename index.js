@@ -2,7 +2,6 @@
 const express = require('express')
 const app = express()
 const port = 3000
-const axios = require("axios")
 const fs = require('fs');
 
 
@@ -20,16 +19,20 @@ app.get('/api/v2/tags', (req, res) => {
         return res.status(500).send('Server Error: Cannot find server data.')
     }
 
-    let student = JSON.parse(rawdata);
+    try{
+        let tags = JSON.parse(rawdata);
+        return res.status(200).send(tags)
 
-    if(!student){
-        return res.status(500).send('Server Error: Cannot parse server data.')
     }
+    catch(e){
 
-    res.status(200).send(student)
+        return res.status(500).send('Server Error: Cannot parse server data.')
+
+    }
 })
 
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`)
 })
 
+// http://localhost:3000/api/v2/tags?historianName=abir
